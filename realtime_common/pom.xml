@@ -70,6 +70,12 @@
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.twitter/chill -->
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>chill_2.13</artifactId>
+            <version>0.10.0</version>
+        </dependency>
     </dependencies>
 
 </project>
