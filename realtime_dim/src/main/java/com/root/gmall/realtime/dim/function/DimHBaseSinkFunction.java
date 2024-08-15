@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.root.gmall.realtime.common.bean.TableProcessDim;
 import com.root.gmall.realtime.common.constant.Constant;
 import com.root.gmall.realtime.common.util.HBaseUtil;
+import com.root.gmall.realtime.common.util.RedisUtil;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
@@ -14,17 +15,17 @@ import java.io.IOException;
 
 public class DimHBaseSinkFunction extends RichSinkFunction<Tuple2<JSONObject, TableProcessDim>> {
     Connection connection;
-//    Jedis jedis;
+    Jedis jedis;
     @Override
     public void open(Configuration parameters) throws Exception {
         connection = HBaseUtil.getConnection();
-        //jedis = RedisUtil.getJedis();
+        jedis = RedisUtil.getJedis();
     }
 
     @Override
     public void close() throws Exception {
         HBaseUtil.closeConnection(connection);
-        //RedisUtil.closeJedis(jedis);
+        RedisUtil.closeJedis(jedis);
     }
 
     @Override
@@ -41,10 +42,10 @@ public class DimHBaseSinkFunction extends RichSinkFunction<Tuple2<JSONObject, Ta
             //覆盖写入维度表数据
             put(data,dim);
         }
-//        //判断redis中的缓存是否发生变化
-//        if ("delete".equals(type)||"update".equals(type)){
-//            jedis.del(RedisUtil.getRedisKey(dim.getSinkTable(),data.getString(dim.getSinkRowKey())));
-//        }
+        //判断redis中的缓存是否发生变化
+        if ("delete".equals(type)||"update".equals(type)){
+            jedis.del(RedisUtil.getRedisKey(dim.getSinkTable(),data.getString(dim.getSinkRowKey())));
+        }
     }
 
     private void delete(JSONObject data,TableProcessDim dim){

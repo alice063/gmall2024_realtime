@@ -3,10 +3,13 @@ package com.root.gmall.realtime.dwd.db.app;
 import com.root.gmall.realtime.common.base.BaseSQLApp;
 import com.root.gmall.realtime.common.constant.Constant;
 import com.root.gmall.realtime.common.util.SQLUtil;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
-import org.apache.flink.table.api.TableResult;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.data.RowData;
+import org.apache.flink.types.Row;
 
 import java.time.Duration;
 
@@ -17,7 +20,7 @@ public class DwdTradeOrderDetail extends BaseSQLApp {
     @Override
     public void handle(StreamTableEnvironment tableEnv, StreamExecutionEnvironment env, String ckAndGroupId) {
         //添加状态的存活时间
-        tableEnv.getConfig().setIdleStateRetention(Duration.ofSeconds(5L));
+        tableEnv.getConfig().setIdleStateRetention(Duration.ofMinutes(5L));
         //1.读取topic_db数据
         createTopicDb(ckAndGroupId,tableEnv);
         //2.筛选订单详情表数据

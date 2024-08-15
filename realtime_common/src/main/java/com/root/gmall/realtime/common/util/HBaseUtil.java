@@ -29,36 +29,36 @@ public class HBaseUtil {
             }
         }
     }
-//    /**
-//     * 获取到 Hbase 的异步连接
-//     *
-//     * @return 得到异步连接对象
-//     */
-//    public static AsyncConnection getHBaseAsyncConnection() {
-//        Configuration conf = new Configuration();
-//        conf.set("hbase.zookeeper.quorum", "hadoop102");
-//        conf.set("hbase.zookeeper.property.clientPort", "2181");
-//        try {
-//            return ConnectionFactory.createAsyncConnection(conf).get();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    /**
-//     * 关闭 hbase 异步连接
-//     *
-//     * @param asyncConn 异步连接
-//     */
-//    public static void closeAsyncHbaseConnection(AsyncConnection asyncConn) {
-//        if (asyncConn != null) {
-//            try {
-//                asyncConn.close();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
+    /**
+     * 获取到 Hbase 的异步连接
+     *
+     * @return 得到异步连接对象
+     */
+    public static AsyncConnection getHBaseAsyncConnection() {
+        Configuration conf = new Configuration();
+        conf.set("hbase.zookeeper.quorum", "47.94.196.219");
+        conf.set("hbase.zookeeper.property.clientPort", "2181");
+        try {
+            return ConnectionFactory.createAsyncConnection(conf).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 关闭 hbase 异步连接
+     *
+     * @param asyncConn 异步连接
+     */
+    public static void closeAsyncHbaseConnection(AsyncConnection asyncConn) {
+        if (asyncConn != null) {
+            try {
+                asyncConn.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
     public static void createTable(Connection connection,String namespace,String table,String... families) throws IOException {
         if( families == null || families.length ==0 ){
             return;
@@ -138,31 +138,31 @@ public class HBaseUtil {
         return jsonObject;
     }
 
-//    public static JSONObject getAsyncCells(AsyncConnection hBaseAsyncConn, String nameSpace, String tableName, String rowKey) {
-//        AsyncTable<AdvancedScanResultConsumer> table = hBaseAsyncConn.getTable(TableName.valueOf(nameSpace, tableName));
-//
-//        Get get = new Get(Bytes.toBytes(rowKey));
-//        try {
-//            // 获取 result
-//            Result result = table.get(get).get();
-//            List<Cell> cells = result.listCells();  // 一个 Cell 表示这行中的一列
-//            JSONObject dim = new JSONObject();
-//            for (Cell cell : cells) {
-//                // 取出每列的列名(json 对象的中的 key)和列值(json 对象中的 value)
-//                String key = Bytes.toString(CellUtil.cloneQualifier(cell));
-//                String value = Bytes.toString(CellUtil.cloneValue(cell));
-//
-//                dim.put(key, value);
-//            }
-//
-//            return dim;
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public static JSONObject getAsyncCells(AsyncConnection hBaseAsyncConn, String nameSpace, String tableName, String rowKey) {
+        AsyncTable<AdvancedScanResultConsumer> table = hBaseAsyncConn.getTable(TableName.valueOf(nameSpace, tableName));
+
+        Get get = new Get(Bytes.toBytes(rowKey));
+        try {
+            // 获取 result
+            Result result = table.get(get).get();
+            List<Cell> cells = result.listCells();  // 一个 Cell 表示这行中的一列
+            JSONObject dim = new JSONObject();
+            for (Cell cell : cells) {
+                // 取出每列的列名(json 对象的中的 key)和列值(json 对象中的 value)
+                String key = Bytes.toString(CellUtil.cloneQualifier(cell));
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+
+                dim.put(key, value);
+            }
+
+            return dim;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
     public static void deleteCells(Connection connection, String namespace, String tableName, String rowKey) throws IOException {
         //1.获取table
         Table table = connection.getTable(TableName.valueOf(namespace, tableName));
