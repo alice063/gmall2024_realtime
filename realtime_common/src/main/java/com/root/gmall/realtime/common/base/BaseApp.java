@@ -26,22 +26,22 @@ public abstract class BaseApp {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(conf);
         env.setParallelism(parallelism);
         //2.添加检查点和状态后端参数
-        // 2.1 设置状态后端
-        env.setStateBackend(new HashMapStateBackend());
-        // 2.2 开启 checkpoint
-        env.enableCheckpointing(5000);
-        // 2.3 设置 checkpoint 模式: 精准一次
-        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
-        // 2.4 checkpoint 存储
-        env.getCheckpointConfig().setCheckpointStorage("file:///d/temp/checkpoint" + ckAndGroupId);
-        // 2.5 checkpoint 并发数
-        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
-        // 2.6 checkpoint 之间的最小间隔
-        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5000);
-        // 2.7 checkpoint  的超时时间
-        env.getCheckpointConfig().setCheckpointTimeout(10000);
-        // 2.8 job 取消时 checkpoint 保留策略
-        env.getCheckpointConfig().setExternalizedCheckpointCleanup(RETAIN_ON_CANCELLATION);
+//        // 2.1 设置状态后端
+//        env.setStateBackend(new HashMapStateBackend());
+//        // 2.2 开启 checkpoint
+//        env.enableCheckpointing(5000);
+//        // 2.3 设置 checkpoint 模式: 精准一次
+//        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+//        // 2.4 checkpoint 存储
+//        env.getCheckpointConfig().setCheckpointStorage("file:///d/temp/checkpoint" + ckAndGroupId);
+//        // 2.5 checkpoint 并发数
+//        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
+//        // 2.6 checkpoint 之间的最小间隔
+//        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5000);
+//        // 2.7 checkpoint  的超时时间
+//        env.getCheckpointConfig().setCheckpointTimeout(10000);
+//        // 2.8 job 取消时 checkpoint 保留策略
+//        env.getCheckpointConfig().setExternalizedCheckpointCleanup(RETAIN_ON_CANCELLATION);
         //3.读取数据
         KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
                 .setBootstrapServers("47.94.196.219:9092")
